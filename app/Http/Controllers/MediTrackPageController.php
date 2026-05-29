@@ -9,6 +9,27 @@ use Illuminate\Support\Str;
 
 class MediTrackPageController extends Controller
 {
+    private function debugLog(string $hypothesisId, string $location, string $message, array $data = []): void
+    {
+        try {
+            $payload = json_encode([
+                'sessionId' => '0cc008',
+                'runId' => 'run6',
+                'hypothesisId' => $hypothesisId,
+                'location' => $location,
+                'message' => $message,
+                'data' => $data,
+                'timestamp' => (int) floor(microtime(true) * 1000),
+            ], JSON_UNESCAPED_SLASHES);
+            if ($payload === false) {
+                return;
+            }
+            file_put_contents('C:/xampp/htdocs/deoris/debug-0cc008.log', $payload . PHP_EOL, FILE_APPEND | LOCK_EX);
+        } catch (\Throwable $e) {
+            // Ignore debug log failures.
+        }
+    }
+
     public function dashboard()
     {
         return view('meditrack', ['service' => config('meditrack')]);
@@ -74,6 +95,13 @@ class MediTrackPageController extends Controller
             'token' => 'required|string|max:500',
             'embedded' => 'sometimes|boolean',
         ]);
+        // #region agent log
+        $this->debugLog('H14', 'MediTrackPageController::ssoExchange:entry', 'meditrack ssoExchange called', [
+            'hasToken' => !empty($validated['token']),
+            'embedded' => (bool) ($validated['embedded'] ?? false),
+            'sessionId' => $request->session()->getId(),
+        ]);
+        // #endregion
 
         $portalUrl = rtrim((string) config('app.portal_url', config('meditrack.trusted_portal_url', 'https://deoris.test')), '/');
         $http = Http::withHeaders([
@@ -96,8 +124,19 @@ class MediTrackPageController extends Controller
         $response = $http->post($portalUrl . '/api/v1/sso/exchange', [
             'token' => $validated['token'],
         ]);
+        // #region agent log
+        $this->debugLog('H14', 'MediTrackPageController::ssoExchange:portalResponse', 'meditrack portal exchange response', [
+            'status' => $response->status(),
+            'ok' => $response->ok(),
+        ]);
+        // #endregion
 
         if (! $response->ok()) {
+            // #region agent log
+            $this->debugLog('H14', 'MediTrackPageController::ssoExchange:invalidToken', 'meditrack exchange rejected token', [
+                'status' => $response->status(),
+            ]);
+            // #endregion
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid SSO token.'
@@ -107,6 +146,11 @@ class MediTrackPageController extends Controller
         $data = $response->json();
         $user = $data['user'] ?? $data['data']['user'] ?? null;
         if (!is_array($user) || empty($user['id'])) {
+            // #region agent log
+            $this->debugLog('H14', 'MediTrackPageController::ssoExchange:invalidPayload', 'meditrack payload missing user id', [
+                'hasUserArray' => is_array($user),
+            ]);
+            // #endregion
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid SSO response.'
@@ -134,6 +178,13 @@ class MediTrackPageController extends Controller
             'sso_embedded' => $embedded,
             'sso_authenticated_at' => now()->timestamp,
         ]);
+        // #region agent log
+        $this->debugLog('H14', 'MediTrackPageController::ssoExchange:sessionHydrated', 'meditrack session hydrated after exchange', [
+            'ssoId' => $id,
+            'role' => $role,
+            'sessionId' => $request->session()->getId(),
+        ]);
+        // #endregion
 
         try {
             (new DeorisUserService())->syncByRole($role, $id, $email, $name);

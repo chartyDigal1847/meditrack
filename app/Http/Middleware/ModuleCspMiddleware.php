@@ -12,6 +12,7 @@ class ModuleCspMiddleware
         $response   = $next($request);
         $portalUrl  = config('app.portal_url', 'https://deoris.test');
         $moduleUrl  = config('app.url', 'https://meditrack.deoris.test');
+        $debugConnectSrc = app()->hasDebugModeEnabled() ? ' http://127.0.0.1:7481' : '';
 
         $csp = implode('; ', [
             "default-src 'self'",
@@ -20,7 +21,7 @@ class ModuleCspMiddleware
             "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com",
             "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com",
             "img-src 'self' data:",
-            "connect-src 'self' " . $moduleUrl . " " . $portalUrl,
+            "connect-src 'self' " . $moduleUrl . " " . $portalUrl . $debugConnectSrc,
             "frame-ancestors " . $portalUrl,
             "frame-src 'self'",
             "object-src 'none'",

@@ -270,7 +270,7 @@
             "version": "1.0.0",
             "dist": {
                 "type": "path",
-                "url": "../DEORIS/packages/DeorisIntegration",
+                "url": "../deoris/packages/DeorisIntegration",
                 "reference": "0ee8f895e49f1b2dca2ec3f3d6be5044c32211b3"
             },
             "require": {

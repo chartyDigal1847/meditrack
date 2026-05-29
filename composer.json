@@ -8,7 +8,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../DEORIS/packages/DeorisIntegration",
+            "url": "../deoris/packages/DeorisIntegration",
             "options": {
                 "symlink": true
             }
