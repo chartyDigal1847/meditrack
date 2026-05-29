@@ -9,6 +9,7 @@ use App\Models\Student;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class MediTrackApiTest extends TestCase
@@ -46,7 +47,7 @@ class MediTrackApiTest extends TestCase
             'diagnosis_title' => 'Abdominal discomfort',
         ]);
 
-        $response->assertCreated()->assertJsonPath('data.student.student_number', '2026-T001');
+        $response->assertCreated()->assertJsonPath('data.student.student_number', 'EXT-2026-T001');
         $this->assertDatabaseHas('clinic_visits', ['chief_complaint' => 'Stomach pain']);
         $this->assertDatabaseHas('event_outbox', ['event_name' => 'ClinicVisitRecorded']);
         $this->assertDatabaseHas('medical_audit_logs', ['action' => 'clinic_visit.recorded']);
@@ -72,7 +73,7 @@ class MediTrackApiTest extends TestCase
             ->assertJsonPath('data.status', 'under_evaluation')
             ->assertJsonPath('data.severity', 'medium');
 
-        $this->assertDatabaseHas('students', ['student_number' => '2026-TOL']);
+        $this->assertDatabaseHas('students', ['student_number' => 'EXT-2026-TOL']);
         $this->assertDatabaseHas('clinic_visits', ['chief_complaint' => 'Mild headache']);
     }
 
@@ -191,7 +192,7 @@ class MediTrackApiTest extends TestCase
         ]);
 
         $this->withDeorisRole('nurse')->postJson('/api/v1/medical-records', [
-            'student_id' => $student->id,
+            'student_id' => (string) $student->id,
             'record_type' => 'clearance',
             'title' => 'Medical clearance',
             'summary' => 'Student is cleared for school activity.',
@@ -253,7 +254,7 @@ class MediTrackApiTest extends TestCase
 
         $response->assertCreated();
         $this->assertDatabaseHas('students', [
-            'student_number' => '2026-NURSE-MATCH',
+            'student_number' => 'EXT-2026-NURSE-MATCH',
             'first_name' => 'Juan',
             'last_name' => 'Dela Cruz',
         ]);
@@ -328,7 +329,7 @@ class MediTrackApiTest extends TestCase
 
         // 1. Post medical record using student_number
         $this->withDeorisRole('nurse')->postJson('/api/v1/medical-records', [
-            'student_id'  => '2026-RESOLVE',
+            'student_id'  => (string) $student->id,
             'record_type' => 'clearance',
             'title'       => 'Test Medical Record',
             'summary'     => 'Some record summary',
@@ -344,7 +345,7 @@ class MediTrackApiTest extends TestCase
 
         // 3. Post prescription using student_number
         $this->withDeorisRole('nurse')->postJson('/api/v1/prescriptions', [
-            'student_id'      => '2026-RESOLVE',
+            'student_id'      => (string) $student->id,
             'medication_name' => 'Aspirin',
             'dosage'          => '100mg',
             'frequency'       => 'Once daily',
@@ -371,3 +372,5 @@ class MediTrackApiTest extends TestCase
         ]);
         $this->assertDatabaseHas('student_concerns', ['title' => 'Anxiety']);
     }
+
+}

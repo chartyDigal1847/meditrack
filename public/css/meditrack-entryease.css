@@ -1,0 +1,87 @@
+/* MediTrack — DEORIS / EntryEase alignment (load after meditrack.css + deoris-module-theme) */
+
+:root {
+    --bg: #f4f6f9;
+    --panel: #ffffff;
+    --text: #1e2530;
+    --muted: #6b7a8d;
+    --line: #e8ecf0;
+    --primary: #7c3041;
+    --primary-2: #9b3d50;
+    --gold: #c9a84c;
+    --shadow: 0 1px 4px rgba(15, 22, 35, 0.06), 0 8px 24px rgba(15, 22, 35, 0.08);
+}
+
+body {
+    background: var(--bg);
+    font-size: 15px;
+}
+
+.app-header {
+    background: linear-gradient(135deg, #7c3041 0%, #9b3d50 100%) !important;
+    color: #fff !important;
+    border-bottom: none !important;
+}
+
+.app-brand,
+.app-brand-name {
+    color: #fff !important;
+}
+
+.app-brand-sub {
+    color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.app-brand-badge {
+    border-radius: 9px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.app-user-chip {
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    color: #fff !important;
+    border-radius: 999px !important;
+}
+
+.top-action {
+    padding: 7px 12px !important;
+    font-size: 0.875rem !important;
+    border-radius: 8px !important;
+}
+
+.top-action.active {
+    background: rgba(124, 48, 65, 0.12) !important;
+    color: var(--primary) !important;
+}
+
+.card {
+    border-radius: 12px !important;
+    border-color: var(--line) !important;
+    box-shadow: var(--shadow) !important;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #7c3041 0%, #9b3d50 100%) !important;
+    color: #fff !important;
+}
+
+.card-header h2 {
+    color: #fff !important;
+    font-size: 0.95rem !important;
+}
+
+.module-title {
+    color: #5c2230 !important;
+    font-weight: 700 !important;
+}
+
+.metrics-grid .metric-card,
+.metrics-grid > article {
+    border-radius: 12px !important;
+    box-shadow: var(--shadow) !important;
+}
+
+.privacy-notice:not(.compact) {
+    display: none !important;
+}

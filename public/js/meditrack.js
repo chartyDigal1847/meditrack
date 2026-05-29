@@ -87,7 +87,8 @@
             student: "Student mode: you may view your own records and submit health concerns only.",
             admin: "Admin mode: read-only analytics, monitoring, and audit access.",
         };
-        $("roleNotice").textContent = copy[state.role] || copy.student;
+        var roleNoticeEl = $("roleNotice");
+        if (roleNoticeEl) roleNoticeEl.textContent = copy[state.role] || copy.student;
     }
 
     function metric(icon, value, label) {

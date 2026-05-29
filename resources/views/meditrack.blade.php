@@ -18,6 +18,8 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/meditrack.css') }}?v={{ filemtime(public_path('css/meditrack.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/deoris-module-theme.css') }}?v={{ filemtime(public_path('css/deoris-module-theme.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/meditrack-entryease.css') }}?v={{ filemtime(public_path('css/meditrack-entryease.css')) }}">
 </head>
 <body>
     <div class="app-shell">
@@ -67,10 +69,6 @@
                     </div>
 
                     <section class="page active" id="page-dashboard">
-                        <div class="privacy-notice">
-                            <i class="fa-solid fa-lock"></i>
-                            <span id="roleNotice">Medical data access is restricted by portal role and every view or update is audited.</span>
-                        </div>
                         <div class="metrics-grid" id="metricsGrid"></div>
                         <div class="dashboard-grid">
                             <article class="card student-hidden">
