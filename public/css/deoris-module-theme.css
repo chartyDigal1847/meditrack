@@ -14,7 +14,7 @@
     --radius-sm: 8px;
     --shadow: 0 1px 4px rgba(15, 22, 35, 0.06), 0 8px 24px rgba(15, 22, 35, 0.08);
     --gradient-burgundy: linear-gradient(135deg, #7c3041 0%, #9b3d50 100%);
-    --ee-body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --ee-body-font: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 html,
