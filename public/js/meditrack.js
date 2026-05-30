@@ -517,10 +517,6 @@
             embedded: !!(event.detail && event.detail.embedded)
         };
 
-        // #region agent log
-        fetch('http://127.0.0.1:7481/ingest/2e21895a-9b5e-4542-86f5-f1ce9c152bfb',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0cc008'},body:JSON.stringify({sessionId:'0cc008',runId:'run8',hypothesisId:'H33',location:'meditrack.js:moduleReady',message:'meditrack sso exchange request prepared',data:{url:url,locationOrigin:window.location.origin,hasPortalUser:Boolean(portalUser&&portalUser.id),hasSsoToken:Boolean(ssoToken),embedded:Boolean(event.detail&&event.detail.embedded)},timestamp:Date.now()})}).catch(()=>{});
-        // #endregion
-
         fetch(url, {
             method: "POST",
             credentials: "same-origin",
@@ -533,9 +529,6 @@
             body: JSON.stringify(payload)
         })
         .then(function (res) {
-            // #region agent log
-            fetch('http://127.0.0.1:7481/ingest/2e21895a-9b5e-4542-86f5-f1ce9c152bfb',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0cc008'},body:JSON.stringify({sessionId:'0cc008',runId:'run8',hypothesisId:'H33',location:'meditrack.js:ssoResponse',message:'meditrack sso exchange response status',data:{status:res.status,ok:res.ok,url:url,locationOrigin:window.location.origin},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
             if (!res.ok) throw new Error("SSO session exchange failed: " + res.status);
             return res.json();
         })
